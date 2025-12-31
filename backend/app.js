@@ -10,6 +10,10 @@ dotenv.config();
 import authRoutes from "./routes/authRoutes.js";
 import providerRoutes from "./routes/providerRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
+import bookingRoutes from "./routes/bookingRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
+import chatSocket from "./socket/chatSocket.js";
+import aiRoutes from "./routes/aiRoutes.js";
 
 
 const app = express();
@@ -17,7 +21,6 @@ const app = express();
 app.use(cors({ origin: "*", credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
-
 
 const server = http.createServer(app);
 
@@ -33,8 +36,12 @@ io.on("connection", (socket) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/provider", providerRoutes);
 app.use("/api/services", serviceRoutes);
+app.use("/api/bookings", bookingRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/ai", aiRoutes);
 
 
+chatSocket(io); // <-- INIT SOCKET EVENTS
 const PORT = process.env.PORT;
 
 server.listen(PORT, async () => {
