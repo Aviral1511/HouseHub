@@ -12,6 +12,10 @@ import BookingPage from "./pages/BookingPage";
 import MyBookings from "./pages/user/MyBookings"
 import ProviderBookings from "./pages/provider/ProviderBookings";
 import ChatRoom from "./pages/chat/ChatRoom";
+import UserProfile from "./pages/user/UserProfile";
+import PaymentPage from "./pages/PaymentPage";
+
+
 
 
 
@@ -33,6 +37,8 @@ export default function App() {
           <Route path="/my-bookings" element={<MyBookings />} />
           <Route path="/provider/bookings" element={<ProviderBookings />} />
           <Route path="/chat/:id" element={<ChatRoom />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/payment/:bookingId/:amount/:providerId" element={<PaymentPage />} />
         </Route>
 
 

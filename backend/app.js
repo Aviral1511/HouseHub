@@ -14,6 +14,8 @@ import bookingRoutes from "./routes/bookingRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import chatSocket from "./socket/chatSocket.js";
 import aiRoutes from "./routes/aiRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 
 
 const app = express();
@@ -39,6 +41,8 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/payment", paymentRoutes);
 
 
 chatSocket(io); // <-- INIT SOCKET EVENTS
