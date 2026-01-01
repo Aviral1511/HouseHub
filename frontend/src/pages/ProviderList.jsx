@@ -37,6 +37,7 @@ export default function ProviderList() {
                             <p className="text-gray-600">{p.bio}</p>
                             <p><strong>Experience:</strong> {p.experience} yrs</p>
                             <p><strong>Base Price:</strong> ₹{p.basePrice}</p>
+                            <p><strong>Rating:</strong> ⭐ {p.rating?.toFixed(1)} ({p.totalReviews} reviews)</p>
                         </div>
 
                         <Link

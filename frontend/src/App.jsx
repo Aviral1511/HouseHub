@@ -14,9 +14,11 @@ import ProviderBookings from "./pages/provider/ProviderBookings";
 import ChatRoom from "./pages/chat/ChatRoom";
 import UserProfile from "./pages/user/UserProfile";
 import PaymentPage from "./pages/PaymentPage";
-
-
-
+import AddReview from "./pages/user/AddReview";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminProviders from "./pages/admin/AdminProviders";
+import AdminBookings from "./pages/admin/AdminBookings";
 
 
 export default function App() {
@@ -39,6 +41,11 @@ export default function App() {
           <Route path="/chat/:id" element={<ChatRoom />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/payment/:bookingId/:amount/:providerId" element={<PaymentPage />} />
+          <Route path="/review/:providerId/:bookingId" element={<AddReview />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/providers" element={<AdminProviders />} />
+          <Route path="/admin/bookings" element={<AdminBookings />} />
         </Route>
 
 

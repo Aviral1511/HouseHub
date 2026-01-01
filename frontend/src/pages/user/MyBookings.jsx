@@ -37,6 +37,13 @@ export default function MyBookings() {
                     <Link to={`/chat/${b._id}`} className="text-sm text-blue-500 underline">
                         Open Chat
                     </Link>
+                    {b.status === "completed" && !b.reviewed && (
+                        <Link to={`/review/${b.providerId?._id}/${b._id}`}
+                            className="btn-primary text-sm inline-block mt-2">
+                            Rate Service
+                        </Link>
+                    )}
+
                 </div>
             ))}
         </div>
