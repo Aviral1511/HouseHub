@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -35,6 +35,7 @@ export default function UserProfile() {
                 <p><strong>Name:</strong> {profile.user.name}</p>
                 <p><strong>Email:</strong> {profile.user.email}</p>
                 <p><strong>Role:</strong> {profile.user.role}</p>
+                <p><strong>Pic:</strong> {profile.user.profilePic}</p>
                 {profile.user.address && (
                     <p><strong>Address:</strong> {profile.user.address.city}, {profile.user.address.state}</p>
                 )}

@@ -1,22 +1,46 @@
 import Chat from "../models/Chat.js";
+import cloudinary from "../config/cloudinary.js";
 
 export const sendMessage = async (req, res) => {
-    try {
-        const { bookingId, message, image } = req.body;
+  try {
+    const { bookingId, message } = req.body;
+    let imageUrl = null;
 
-        const chat = await Chat.create({
-            bookingId,
-            senderId: req.user.id,
-            message,
-            image: image || null,
-        });
+    // If an image is uploaded, process it
+    if (req.file) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: "househub_chat_images",
+            resource_type: "image",
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
 
-        // Emit to socket room later
-        res.json({ message: "Message sent", chat });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+        stream.end(req.file.buffer); // Upload file buffer
+      });
+
+      imageUrl = uploadResult.secure_url;
     }
+
+    // Save message to DB
+    const chat = await Chat.create({
+      bookingId,
+      senderId: req.user.id,
+      message: message || "",  // message optional
+      image: imageUrl,
+    });
+
+    res.json({ message: "Message Sent", chat });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
+
 
 export const getMessages = async (req, res) => {
     try {

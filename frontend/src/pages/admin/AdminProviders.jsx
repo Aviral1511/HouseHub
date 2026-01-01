@@ -7,14 +7,14 @@ export default function AdminProviders() {
     const { token } = useSelector(s => s.auth);
     const [list, setList] = useState([]);
 
-    const fetchData = () => axios.get("http://localhost:5000/api/admin/providers", {
+    const fetchData = () => axios.get("http://localhost:8000/api/admin/providers", {
         headers: { Authorization: `Bearer ${token}` }
     }).then(res => setList(res.data));
 
     useEffect(() => { fetchData(); }, []);
 
     const approve = (id) => {
-        axios.put(`http://localhost:5000/api/admin/provider/approve/${id}`, {},
+        axios.put(`http://localhost:8000/api/admin/provider/approve/${id}`, {},
             { headers: { Authorization: `Bearer ${token}` } })
             .then(() => {
                 toast.success("Provider Approved");

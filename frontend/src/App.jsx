@@ -19,6 +19,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminProviders from "./pages/admin/AdminProviders";
 import AdminBookings from "./pages/admin/AdminBookings";
+import AIAssistantChat from "./pages/AIAssistantChat.jsx";
 
 
 export default function App() {
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/providers" element={<AdminProviders />} />
           <Route path="/admin/bookings" element={<AdminBookings />} />
+          <Route path="/ai-chat" element={<AIAssistantChat />} />
         </Route>
 
 

@@ -14,7 +14,7 @@ export default function AddReview() {
 
     const submitReview = async () => {
         try {
-            await axios.post("http://localhost:5000/api/review/add",
+            await axios.post("http://localhost:8000/api/review/add",
                 { providerId, bookingId, rating, comment },
                 { headers: { Authorization: `Bearer ${token}` } });
 

@@ -7,7 +7,7 @@ export default function AdminUsers() {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/admin/users", {
+        axios.get("http://localhost:8000/api/admin/users", {
             headers: { Authorization: `Bearer ${token}` }
         }).then(res => setUsers(res.data));
     }, []);

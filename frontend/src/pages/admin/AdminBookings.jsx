@@ -7,7 +7,7 @@ export default function AdminBookings() {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/admin/bookings", {
+        axios.get("http://localhost:8000/api/admin/bookings", {
             headers: { Authorization: `Bearer ${token}` }
         }).then(res => setData(res.data));
     }, []);

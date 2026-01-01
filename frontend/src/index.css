@@ -12,3 +12,9 @@
   @apply bg-white p-6 shadow rounded text-xl font-semibold hover:bg-blue-500 hover:text-white transition cursor-pointer;
 }
 
+.home-card:hover {
+  transform: scale(1.03);
+  transition: 0.25s;
+}
+
+

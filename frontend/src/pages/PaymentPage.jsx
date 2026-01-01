@@ -10,7 +10,7 @@ export default function PaymentPage() {
 
     const payNow = async () => {
         try {
-            const res = await axios.post("http://localhost:5000/api/payment/create-order",
+            const res = await axios.post("http://localhost:8000/api/payment/create-order",
                 { amount, bookingId },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -25,7 +25,7 @@ export default function PaymentPage() {
                 description: "Service Payment",
                 order_id: order.id,
                 handler: async function (response) {
-                    const verify = await axios.post("http://localhost:5000/api/payment/verify", {
+                    const verify = await axios.post("http://localhost:8000/api/payment/verify", {
                         ...response,
                         bookingId, amount, providerId
                     }, {
