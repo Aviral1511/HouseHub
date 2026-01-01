@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "../redux/slices/authSlice.js";
+import { loginSuccess } from "../../redux/slices/authSlice.js";
 import { toast } from "react-toastify";
 
 export default function Login() {
@@ -14,7 +14,7 @@ export default function Login() {
 
     const loginUser = async () => {
         try {
-            const res = await axios.post("http://localhost:5000/api/auth/login", form);
+            const res = await axios.post("http://localhost:8000/api/auth/login", form);
             dispatch(loginSuccess(res.data));
             toast.success("Login Successful");
             navigate("/");

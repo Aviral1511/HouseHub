@@ -15,7 +15,7 @@ export default function Register() {
 
     const registerUser = async () => {
         try {
-            await axios.post("http://localhost:5000/api/auth/register", form);
+            await axios.post("http://localhost:8000/api/auth/register", form);
             toast.success("Registered Successfully");
             navigate("/login");
         } catch (err) {
