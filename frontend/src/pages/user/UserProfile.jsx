@@ -32,12 +32,12 @@ export default function UserProfile() {
             <div className="bg-white p-5 shadow rounded">
                 <h2 className="text-2xl font-bold text-blue-600">My Profile 🧑</h2>
 
-                <p><strong>Name:</strong> {profile.user.name}</p>
-                <p><strong>Email:</strong> {profile.user.email}</p>
-                <p><strong>Role:</strong> {profile.user.role}</p>
-                <p><strong>Pic:</strong> {profile.user.profilePic}</p>
-                {profile.user.address && (
-                    <p><strong>Address:</strong> {profile.user.address.city}, {profile.user.address.state}</p>
+                <p><strong>Name:</strong> {profile.user?.name}</p>
+                <p><strong>Email:</strong> {profile.user?.email}</p>
+                <p><strong>Role:</strong> {profile.user?.role}</p>
+                <p><strong>Pic:</strong> {profile.user?.profilePic}</p>
+                {profile.user?.address && (
+                    <p><strong>Address:</strong> {profile.user?.address.city}, {profile.user?.address.state}</p>
                 )}
 
                 {/* Future: Add Profile edit popup */}

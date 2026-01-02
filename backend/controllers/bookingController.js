@@ -1,16 +1,29 @@
 import Booking from "../models/Booking.js";
 import Provider from "../models/Provider.js";
+import Service from "../models/Service.js";
 
 
 // USER creates booking request
 export const createBooking = async (req, res) => {
     try {
         const { providerId, serviceId, scheduledDate, address, totalAmount } = req.body;
+        let serviceIdToUse = serviceId;
+
+        if (!serviceId) {
+            const service = await Service.findById(serviceId);
+            if (!service) {
+                return res.status(400).json({
+                message: "No service found for this provider"
+                });
+            }
+            serviceIdToUse = service._id;
+        }
+
 
         const newBooking = await Booking.create({
             userId: req.user.id,
             providerId,
-            serviceId,
+            serviceId : serviceIdToUse,
             scheduledDate,
             address,
             totalAmount,
@@ -19,7 +32,8 @@ export const createBooking = async (req, res) => {
 
         res.json({ message: "Booking created", booking: newBooking });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.log(err);
+        res.status(500).json({ err });
     }
 };
 
@@ -38,6 +52,7 @@ export const acceptBooking = async (req, res) => {
 
         res.json({ message: "Booking accepted", booking });
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -58,6 +73,7 @@ export const completeBooking = async (req, res) => {
 
         res.json({ message: "Booking completed", booking });
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -67,10 +83,21 @@ export const completeBooking = async (req, res) => {
 export const getMyBookings = async (req, res) => {
     try {
         const bookings = await Booking.find({ userId: req.user.id })
-            .populate("providerId serviceId");
+        .populate({
+            path: "providerId",
+            select: "-password",           // remove password if provider has one
+            populate: {
+            path: "userId",
+            select: "-password"          // remove password from provider's user
+            }
+        })
+        .populate({
+            path: "serviceId"
+        });
 
         res.json(bookings);
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: err.message });
     }
 };
@@ -84,6 +111,7 @@ export const getProviderBookings = async (req, res) => {
 
         res.json(bookings);
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: err.message });
     }
 };

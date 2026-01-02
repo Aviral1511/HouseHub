@@ -37,6 +37,7 @@ export const sendMessage = async (req, res) => {
     res.json({ message: "Message Sent", chat });
 
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 };

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 export default function BookingPage() {
-    const { id } = useParams(); // providerId
+    const { id, serviceId } = useParams(); // providerId
     const { token, user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
@@ -14,18 +14,22 @@ export default function BookingPage() {
     const [address, setAddress] = useState("");
     const [totalAmount, setTotalAmount] = useState("");
 
-    const fetchProvider = async () => {
-        try {
-            const res = await axios.get(`http://localhost:8000/api/provider/category/${id}`); // fixing later
-        } catch (err) {
-            // ignore
-        }
-    };
-
     // Instead we will fetch provider directly:
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/provider/category/Plumber`) // temporary until provider details endpoint created
-    }, [])
+        const fetchProvider = async () => {
+            try {
+                const res = await axios.get(
+                    `http://localhost:8000/api/provider/${id}`
+                );
+                setProvider(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        fetchProvider();
+    }, [id]);
+
 
     const createBooking = async () => {
         if (!date || !address || !totalAmount)
@@ -36,7 +40,7 @@ export default function BookingPage() {
                 "http://localhost:8000/api/bookings/create",
                 {
                     providerId: id,
-                    serviceId: "placeholder",  // soon replaced with real service ID
+                    serviceId,
                     scheduledDate: date,
                     address,
                     totalAmount,

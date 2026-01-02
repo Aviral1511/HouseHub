@@ -26,6 +26,8 @@ const serviceCategories = [
 
 const cities = ["Delhi","Mumbai","Bangalore","Hyderabad","Kolkata","Chennai","Pune","Jaipur"];
 const states = ["UP","MH","KA","TS","WB","TN","MH","RJ"];
+const firstNames = ["Aman", "Ankit", "Rahul", "Binod", "Charan", "Dinesh", "Elvish", "Naman", "Snajay", "Gaurav", "Vikas", "John", "Will", "Tom"];
+const lastNames = ["Singh", "Pratap", "Tiwari", "Patil", "Yadav", "Smith", "Rodriguez", "Pratap", "Rajput"];
 
 // ----------------- DATA GENERATION -----------------
 
@@ -33,13 +35,14 @@ const generateUsers = async ()=>{
     const users=[];
     const password = await bcrypt.hash("password123",10);
 
-    for(let i=1;i<=20;i++){
+    for(let i=1;i<=40;i++){
+        let fn = random(firstNames), ln = random(lastNames);
         users.push({
-            name:`User ${i}`,
-            email:`user${i}@gmail.com`,
+            name:`${fn} ${ln}`,
+            email:`${fn}@user${i}.com`,
             password,
             role:"user",
-            profilePic:"https://i.ibb.co/2Fsf1Dv/default-user.png",
+            profilePic:"https://plus.unsplash.com/premium_vector-1727953894835-e3945c47a7c0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fHVzZXJ8ZW58MHx8MHx8fDA%3D",
             address:{
                 city:random(cities),
                 state:random(states),
@@ -55,13 +58,14 @@ const generateAdmins = async ()=>{
     const admins=[];
     const password = await bcrypt.hash("admin123",10);
 
-    for(let i=1;i<=5;i++){
+    for(let i=1;i<=10;i++){
+        let fn = random(firstNames), ln = random(lastNames);
         admins.push({
-            name:`Admin ${i}`,
-            email:`admin${i}@gmail.com`,
+            name:`${fn} ${ln}`,
+            email:`${fn}@admin${i}.com`,
             password,
             role:"admin",
-            profilePic:"https://i.ibb.co/2Fsf1Dv/default-user.png"
+            profilePic:"https://plus.unsplash.com/premium_vector-1728553013500-b5a3d628fb7f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
         })
     }
     // console.log(admins);
@@ -71,17 +75,18 @@ const generateAdmins = async ()=>{
 const generateProviders = async (users)=>{
     const providers=[];
 
-    const shortlistedUsers = users.slice(0,10); // first 10 become providers
+    const shortlistedUsers = users.slice(0,15); // first 10 become providers
     shortlistedUsers.forEach((u,i)=>{
+        let service = random(serviceCategories);
         providers.push({
             userId:u._id,
-            serviceCategory:serviceCategories[i],
+            serviceCategory:service,
             experience: Math.floor(Math.random()*10)+1,
-            bio:`Experienced ${serviceCategories[i]} offering reliable service.`,
+            bio:`Experienced ${service} offering reliable service.`,
             hourlyRate: Math.floor(Math.random()*400)+200,
             rating:(Math.random()*2+3).toFixed(1), // between 3-5
             totalReviews:Math.floor(Math.random()*200),
-            profilePic:"https://i.ibb.co/2Fsf1Dv/default-user.png",
+            profilePic:"https://plus.unsplash.com/premium_vector-1727952231969-10d3f8f091f0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjQxfHx1c2VyfGVufDB8fDB8fHww",
             approved: Math.random()>0.3 // randomly approved
         })
     });

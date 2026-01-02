@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 export default function ProviderList() {
-    const { category } = useParams();
+    const { category, id } = useParams();
     const [providers, setProviders] = useState([]);
 
 
@@ -41,7 +41,7 @@ export default function ProviderList() {
                         </div>
 
                         <Link
-                            to={`/book/${p._id}`}
+                            to={`/book/${p._id}/${id}`}
                             className="mt-3 bg-blue-600 text-white px-4 py-2 rounded text-center hover:bg-blue-700"
                         >
                             Book Now

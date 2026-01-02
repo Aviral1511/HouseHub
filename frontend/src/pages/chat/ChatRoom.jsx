@@ -86,7 +86,7 @@ export default function ChatRoom() {
             </div>
 
             {/* Input Row */}
-            <div className="flex gap-2 mt-3 items-center">
+            <div className="flex gap-2 my-3 items-center">
                 <AiOutlinePaperClip
                     size={26}
                     className="cursor-pointer"
@@ -111,10 +111,10 @@ export default function ChatRoom() {
                     placeholder="Type a message..."
                 />
 
-                <button onClick={sendMsg} className="btn-primary w-24">
-                    Send
-                </button>
             </div>
+            <button onClick={sendMsg} className="btn-primary w-24">
+                Send
+            </button>
 
             {preview && (
                 <div className="mt-2">

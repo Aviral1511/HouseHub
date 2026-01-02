@@ -45,3 +45,15 @@ export const getProvidersByCategory = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const getCurrentProvider = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const provider = await Provider.findById(id);
+        if(!provider) return res.status(404).json({ message: "Profile not found" });
+        res.json(provider);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error});
+    }
+}

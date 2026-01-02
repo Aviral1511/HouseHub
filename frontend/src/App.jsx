@@ -31,11 +31,11 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/services" element={<ServiceList />} />
-        <Route path="/providers/:category" element={<ProviderList />} />
+        <Route path="/providers/:category/:id" element={<ProviderList />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/book/:id" element={<BookingPage />} />
+          <Route path="/book/:id/:serviceId" element={<BookingPage />} />
           <Route path="/provider/profile" element={<ProviderProfile />} />
           <Route path="/my-bookings" element={<MyBookings />} />
           <Route path="/provider/bookings" element={<ProviderBookings />} />

@@ -28,7 +28,7 @@ export default function ServiceList() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {services.map((s, index) => (
-                    <Link to={`/providers/${s.name}`} key={index}>
+                    <Link to={`/providers/${s.name}/${s._id}`} key={index}>
                         <div className="border p-4 rounded shadow hover:shadow-lg transition cursor-pointer bg-white">
                             <h2 className="text-xl font-semibold">{s.name}</h2>
                             <p className="text-gray-500 text-sm">Starts at ₹{s.basePrice}</p>

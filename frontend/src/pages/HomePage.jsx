@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 export default function HomePage() {
     const { user } = useSelector(s => s.auth);
+    const [services, setServices] = useState([]);
+
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const res = await axios.get(
+                    "http://localhost:8000/api/services/"
+                );
+                setServices(res.data);
+                console.log(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        fetchServices();
+    }, []);
+
 
     return (
         <div className="">
 
             {/* Hero Section */}
-            <section className="h-[65vh] bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex flex-col justify-center items-center text-center px-6">
+            <section className="h-[65vh] bg-linear-to-r from-blue-600 to-indigo-600 text-white flex flex-col justify-center items-center text-center px-6">
                 <h1 className="text-4xl sm:text-5xl font-extrabold drop-shadow-lg">
                     Get Home Services On Demand 🏠
                 </h1>
@@ -29,21 +49,24 @@ export default function HomePage() {
 
             {/* Services Section */}
             <section className="py-10 px-6 max-w-6xl mx-auto">
-                <h2 className="text-3xl font-bold text-center mb-6">Popular Services</h2>
+                <h2 className="text-3xl font-bold text-center mb-6">
+                    Popular Services
+                </h2>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                    {["Plumber", "Electrician", "Cleaner", "Carpenter", "Painter", "AC Repair", "Pest Control", "Appliance Repair"]
-                        .map((s, i) => (
-                            <Link
-                                key={i}
-                                to={`/providers/${s}`}
-                                className="border p-5 rounded-lg shadow hover:shadow-xl transition bg-white text-center font-semibold"
-                            >
-                                {s}
-                            </Link>
-                        ))}
+                    {services.map((s) => (
+                        <Link
+                            key={s._id}
+                            to={`/providers/${s.name}/${s._id}`}
+                            className="border p-5 rounded-lg shadow hover:shadow-xl transition bg-white text-center font-semibold"
+                        >
+                            {s.name}
+                        </Link>
+                    ))}
                 </div>
+
             </section>
+
 
             {/* Why HouseHub */}
             <section className="py-12 bg-gray-100 text-center">
