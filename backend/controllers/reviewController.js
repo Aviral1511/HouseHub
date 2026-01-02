@@ -38,3 +38,27 @@ export const getProviderReviews = async (req,res)=>{
     res.status(500).json({error:err.message});
   }
 };
+
+export const getRecentReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find()
+      .sort({ createdAt: -1 })
+      .limit(8)
+      .populate({
+        path: "userId",
+        select: "name profilePic"
+      })
+      .populate({
+        path: "providerId",
+        populate: {
+          path: "userId",
+          select: "name"
+        }
+      });
+
+    res.json(reviews);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch testimonials" });
+  }
+};
