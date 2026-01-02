@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 export default function BookingPage() {
-    const { id, serviceId } = useParams(); // providerId
+    const { providerId, serviceId } = useParams(); // providerId
     const { token, user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
@@ -14,21 +14,24 @@ export default function BookingPage() {
     const [address, setAddress] = useState("");
     const [totalAmount, setTotalAmount] = useState("");
 
-    // Instead we will fetch provider directly:
-    useEffect(() => {
-        const fetchProvider = async () => {
-            try {
-                const res = await axios.get(
-                    `http://localhost:8000/api/provider/${id}`
-                );
-                setProvider(res.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
 
-        fetchProvider();
-    }, [id]);
+    // Instead we will fetch provider directly:
+    // useEffect(() => {
+    //     const fetchProvider = async () => {
+    //         try {
+    //             const res = await axios.get(
+    //                 `http://localhost:8000/api/provider/me`
+    //             );
+    //             setProvider(res.data);
+    //             console.log(res.data);
+    //         } catch (err) {
+    //             console.log(err);
+    //         }
+    //     };
+
+    //     fetchProvider();
+    // }, [id]);
+
 
 
     const createBooking = async () => {
@@ -36,10 +39,11 @@ export default function BookingPage() {
             return toast.error("Fill all details!");
 
         try {
+            // console.log(providerId + " --- " + serviceId);
             const res = await axios.post(
                 "http://localhost:8000/api/bookings/create",
                 {
-                    providerId: id,
+                    providerId,
                     serviceId,
                     scheduledDate: date,
                     address,
@@ -47,7 +51,7 @@ export default function BookingPage() {
                 },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-
+            // console.log(res.data);
             toast.success("Booking created successfully! 🎉");
             navigate("/my-bookings");
 

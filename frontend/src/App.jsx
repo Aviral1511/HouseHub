@@ -36,7 +36,7 @@ export default function App() {
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/book/:id/:serviceId" element={<BookingPage />} />
+          <Route path="/book/:providerId/:serviceId" element={<BookingPage />} />
           <Route path="/provider/profile" element={<ProviderProfile />} />
           <Route path="/my-bookings" element={<MyBookings />} />
           <Route path="/provider/bookings" element={<ProviderBookings />} />

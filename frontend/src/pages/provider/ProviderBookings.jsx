@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -45,7 +45,9 @@ export default function ProviderBookings() {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setJobs(res.data);
-            } catch {
+                // console.log(res.data);
+            } catch (error) {
+                console.log(error);
                 toast.error("Failed to load jobs");
             }
         }; fetchJobs();

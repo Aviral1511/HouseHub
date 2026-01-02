@@ -72,27 +72,33 @@ const generateAdmins = async ()=>{
     return admins;
 }
 
-const generateProviders = async (users)=>{
-    const providers=[];
-
-    const shortlistedUsers = users.slice(0,15); // first 10 become providers
-    shortlistedUsers.forEach((u,i)=>{
-        let service = random(serviceCategories);
+const generateProviders = async (users) => {
+    const providers = [];
+    
+    const providerUsers = users.slice(0, 15); // first 15 users become providers
+    
+    for (let i = 0; i < providerUsers.length; i++) {
+        const user = providerUsers[i];
+        const service = serviceCategories[i % serviceCategories.length];
+        
+        // 🔥 VERY IMPORTANT: update user role to provider
+        await User.findByIdAndUpdate(user._id, { role: "provider" });
+        
         providers.push({
-            userId:u._id,
-            serviceCategory:service,
-            experience: Math.floor(Math.random()*10)+1,
-            bio:`Experienced ${service} offering reliable service.`,
-            hourlyRate: Math.floor(Math.random()*400)+200,
-            rating:(Math.random()*2+3).toFixed(1), // between 3-5
-            totalReviews:Math.floor(Math.random()*200),
-            profilePic:"https://plus.unsplash.com/premium_vector-1727952231969-10d3f8f091f0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjQxfHx1c2VyfGVufDB8fDB8fHww",
-            approved: Math.random()>0.3 // randomly approved
-        })
+            userId: user._id,
+      serviceCategory: service,
+      experience: Math.floor(Math.random() * 10) + 1,
+      bio: `Experienced ${service} offering reliable service.`,
+      hourlyRate: Math.floor(Math.random() * 400) + 200,
+      rating: Number((Math.random() * 2 + 3).toFixed(1)),
+      totalReviews: Math.floor(Math.random() * 200),
+      profilePic:"https://plus.unsplash.com/premium_vector-1727952231969-10d3f8f091f0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjQxfHx1c2VyfGVufDB8fDB8fHww",
+      approved: true
     });
-    // console.log(providers);
-    return providers;
-}
+  }
+
+  return providers;
+};
 
 const generateServices = ()=>{
     return serviceCategories.map(s=>({

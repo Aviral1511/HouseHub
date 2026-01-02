@@ -14,7 +14,7 @@ export default function ProviderList() {
             try {
                 const res = await axios.get(`http://localhost:8000/api/provider/category/${category}`);
                 setProviders(res.data);
-                console.log(res.data);
+                // console.log(res.data);
             } catch (err) {
                 toast.error("Failed to fetch providers");
             }

@@ -7,23 +7,11 @@ import Service from "../models/Service.js";
 export const createBooking = async (req, res) => {
     try {
         const { providerId, serviceId, scheduledDate, address, totalAmount } = req.body;
-        let serviceIdToUse = serviceId;
-
-        if (!serviceId) {
-            const service = await Service.findById(serviceId);
-            if (!service) {
-                return res.status(400).json({
-                message: "No service found for this provider"
-                });
-            }
-            serviceIdToUse = service._id;
-        }
-
 
         const newBooking = await Booking.create({
             userId: req.user.id,
             providerId,
-            serviceId : serviceIdToUse,
+            serviceId,
             scheduledDate,
             address,
             totalAmount,
@@ -94,7 +82,7 @@ export const getMyBookings = async (req, res) => {
         .populate({
             path: "serviceId"
         });
-
+        // console.log(bookings)
         res.json(bookings);
     } catch (err) {
         console.log(err);
@@ -107,8 +95,9 @@ export const getMyBookings = async (req, res) => {
 export const getProviderBookings = async (req, res) => {
     try {
         const bookings = await Booking.find({ providerId: req.user.id })
-            .populate("userId serviceId");
-
+        .populate("userId serviceId");
+        
+        console.log(bookings);
         res.json(bookings);
     } catch (err) {
         console.log(err);
