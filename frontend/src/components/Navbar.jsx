@@ -53,6 +53,17 @@ export default function Navbar() {
                     <Link to="/ai-chat" className="flex items-center gap-1 font-medium hover:text-blue-600 transition">
                         <FiMessageCircle /> AI Assistant
                     </Link>
+                    {user?.role === "provider" && (
+                        <Link to="/provider/bookings" className="flex items-center gap-1 font-medium hover:text-blue-600 transition">
+                            🛠 Provider Panel
+                        </Link>
+                    )}
+
+                    {user?.role === "admin" && (
+                        <Link to="/admin" className="flex items-center font-medium hover:text-blue-600 transition">
+                            🔐 Admin Dashboard
+                        </Link>
+                    )}
 
                     {user ? (
                         <div className="relative">
@@ -80,17 +91,7 @@ export default function Navbar() {
                                         📅 My Bookings
                                     </Link>
 
-                                    {user.role === "provider" && (
-                                        <Link to="/provider/bookings" className="dropdown-item">
-                                            🛠 Provider Panel
-                                        </Link>
-                                    )}
 
-                                    {user.role === "admin" && (
-                                        <Link to="/admin" className="dropdown-item">
-                                            🔐 Admin Dashboard
-                                        </Link>
-                                    )}
 
                                     <div className="dropdown-item text-red-600 cursor-pointer flex">
                                         <button
@@ -123,13 +124,13 @@ export default function Navbar() {
                 <div className="md:hidden bg-blue-100 border-2 rounded-lg px-6 py-4 space-y-3 text-center">
                     <Link to="/services" className="mobile-link">Services</Link>
                     <Link to="/ai-chat" className="mobile-link">AI Assistant</Link>
+                    {user?.role === "provider" && <Link to="/provider/bookings" className="mobile-link">Provider Panel</Link>}
+                    {user?.role === "admin" && <Link to="/admin" className="mobile-link">Admin Dashboard</Link>}
 
                     {user ? (
                         <>
                             <Link to="/profile" className="mobile-link">Profile</Link>
                             <Link to="/my-bookings" className="mobile-link">My Bookings</Link>
-                            {user.role === "provider" && <Link to="/provider/bookings" className="mobile-link">Provider Panel</Link>}
-                            {user.role === "admin" && <Link to="/admin" className="mobile-link">Admin Dashboard</Link>}
                             <div className="mobile-link text-red-500 cursor-pointer">
                                 <button onClick={handleLogout} >Logout</button>
 
