@@ -16,21 +16,21 @@ export default function BookingPage() {
 
 
     // Instead we will fetch provider directly:
-    // useEffect(() => {
-    //     const fetchProvider = async () => {
-    //         try {
-    //             const res = await axios.get(
-    //                 `http://localhost:8000/api/provider/me`
-    //             );
-    //             setProvider(res.data);
-    //             console.log(res.data);
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     };
+    useEffect(() => {
+        const fetchProvider = async () => {
+            try {
+                const res = await axios.get(
+                    `http://localhost:8000/api/provider/${providerId}`
+                );
+                setProvider(res.data);
+                // console.log(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
 
-    //     fetchProvider();
-    // }, [id]);
+        fetchProvider();
+    }, [providerId]);
 
 
 
@@ -43,7 +43,7 @@ export default function BookingPage() {
             const res = await axios.post(
                 "http://localhost:8000/api/bookings/create",
                 {
-                    providerId,
+                    providerId: provider.userId,
                     serviceId,
                     scheduledDate: date,
                     address,

@@ -9,7 +9,7 @@ const router = express.Router();
 router.post("/create", auth, allowRoles("provider"), createProviderProfile);
 
 // Provider can view their own profile
-router.get("/me", auth, allowRoles("provider"), getProviderProfile);
+// router.get("/me", auth, allowRoles("provider"), getProviderProfile);
 
 router.get("/:id", getCurrentProvider);
 // Public — users can view list of providers

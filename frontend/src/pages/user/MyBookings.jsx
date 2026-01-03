@@ -39,7 +39,7 @@ export default function MyBookings() {
             {bookings.map((b) => (
                 <div key={b._id} className="border p-4 rounded shadow mb-3 bg-white">
                     <h3 className="font-bold">{b.serviceId?.name}</h3>
-                    <p>Provider: <span className="font-semibold">{b.providerId?.userId?.name}</span></p>
+                    <p>Provider: <span className="font-semibold">{b.provider?.userId?.name}</span></p>
                     <p>
                         Status:{" "}
                         <span className={`font-semibold ${statusColor[b.status]}`}>
@@ -52,7 +52,7 @@ export default function MyBookings() {
                         Open Chat
                     </Link>
                     {b.status === "completed" && !b.reviewed && (
-                        <Link to={`/review/${b.providerId?._id}/${b._id}`}
+                        <Link to={`/review/${b.provider?._id}/${b._id}`}
                             className="btn-primary text-sm inline-block mt-2">
                             Rate Service
                         </Link>

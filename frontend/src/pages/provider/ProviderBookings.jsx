@@ -45,7 +45,7 @@ export default function ProviderBookings() {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setJobs(res.data);
-                // console.log(res.data);
+                console.log(res.data);
             } catch (error) {
                 console.log(error);
                 toast.error("Failed to load jobs");
