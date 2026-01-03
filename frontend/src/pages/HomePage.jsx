@@ -100,20 +100,26 @@ export default function HomePage() {
 
 
     useEffect(() => {
-        axios.get("http://localhost:8000/api/reviews/recent")
-            .then(res => setReviews(res.data))
-            .catch(err => console.log(err));
+        const fetchReviews = async () => {
+            try {
+                const res = await axios.get("http://localhost:8000/api/review/recent");
+                setReviews(res.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchReviews();
     }, []);
 
     // Auto slide
     useEffect(() => {
-        if (dummyReviews.length === 0) return;
+        if (reviews.length === 0) return;
         const timer = setInterval(() => {
-            setIndex((prev) => (prev + 1) % dummyReviews.length);
+            setIndex((prev) => (prev + 1) % reviews.length);
         }, 3000);
 
         return () => clearInterval(timer);
-    }, [dummyReviews]);
+    }, [reviews]);
 
 
     useEffect(() => {
@@ -175,7 +181,7 @@ export default function HomePage() {
                             to="/ai-chat"
                             className=" text-black px-6 py-3 rounded-full font-bold border border-white/40 backdrop-blur hover:bg-yellow-300 hover:scale-105 transition bg-yellow-400"
                         >
-                            Ask AI Assistant 🤖
+                            Chat with our HouseHub AI 🤖
                         </Link>
 
                     </div>
@@ -233,7 +239,35 @@ export default function HomePage() {
                 </div>
             </section>
 
+            {/* AI Helper Banner */}
+            <div className="mx-12 my-5 rounded-2xl bg-linear-to-r from-yellow-400 via-yellow-300 to-orange-400 p-6 md:p-8 shadow-lg relative overflow-hidden">
 
+                {/* Decorative Blur */}
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/30 rounded-full blur-2xl"></div>
+
+                <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
+
+                    {/* Text */}
+                    <div className="max-w-xl text-center md:text-left">
+                        <h2 className="text-2xl md:text-3xl font-extrabold text-black">
+                            Not sure which service you need? 🤔
+                        </h2>
+                        <p className="mt-2 text-black/80 text-sm md:text-base">
+                            Describe your problem in simple words and let our AI instantly
+                            suggest the right service & providers.
+                        </p>
+                    </div>
+
+                    {/* CTA */}
+                    <Link
+                        to="/ai-assistant"
+                        className="group inline-flex items-center gap-2 bg-black text-white px-7 py-3 rounded-xl font-semibold hover:bg-gray-900 transition-all shadow-md"
+                    >
+                        <span>Ask our Assistant</span>
+                        <span className="group-hover:translate-x-1 transition-transform">🤖</span>
+                    </Link>
+                </div>
+            </div>
 
             {/* Why HouseHub */}
             <section className="py-16 bg-gray-100">
@@ -276,16 +310,16 @@ export default function HomePage() {
                         className="flex transition-transform duration-700"
                         style={{ transform: `translateX(-${index * 100}%)` }}
                     >
-                        {dummyReviews.map((r) => (
+                        {reviews.map((r) => (
                             <div
                                 key={r._id}
                                 className="min-w-full px-6"
                             >
-                                <div className="bg-gray-50 p-6 rounded-xl shadow-lg text-center border border-gray-200">
+                                <div className="bg-linear-to-r from-[#FFEFBA] to-[#FFFFFF] p-6 rounded-xl shadow-xl text-center border border-gray-200">
                                     <img
                                         src={r.userId?.profilePic || "https://ui-avatars.com/api/?name=User"}
                                         alt="user"
-                                        className="w-16 h-16 rounded-full mx-auto mb-3 object-cover"
+                                        className="w-16 h-16 rounded-full mx-auto mb-3 object-cover border border-gray-800"
                                     />
 
                                     <h4 className="font-semibold text-lg">
@@ -313,7 +347,7 @@ export default function HomePage() {
 
 
             {/* AI Section */}
-            <section className="py-20 bg-gray-100">
+            {/* <section className="py-20 bg-gray-100">
                 <div className="max-w-7xl mx-auto px-6 text-center">
                     <div className="bg-linear-to-r from-blue-200 via-cyan-100 to-indigo-200 rounded-2xl p-10 shadow-lg">
                         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -331,7 +365,7 @@ export default function HomePage() {
                         </Link>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
 
             {/* Footer */}

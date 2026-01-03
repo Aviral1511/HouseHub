@@ -5,7 +5,7 @@ import { addReview, getProviderReviews, getRecentReviews } from "../controllers/
 const router = express.Router();
 
 router.post("/add", auth, addReview);
-router.get("/:id", getProviderReviews); // public
 router.get("/recent", getRecentReviews);
+router.get("/:id", getProviderReviews); // public
 
 export default router;

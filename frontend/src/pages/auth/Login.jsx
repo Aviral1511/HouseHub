@@ -10,13 +10,17 @@ export default function Login() {
     const navigate = useNavigate();
     const [form, setForm] = useState({ email: "", password: "" });
 
-    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+    const handleChange = (e) =>
+        setForm({ ...form, [e.target.name]: e.target.value });
 
     const loginUser = async () => {
         try {
-            const res = await axios.post("http://localhost:8000/api/auth/login", form);
+            const res = await axios.post(
+                "http://localhost:8000/api/auth/login",
+                form
+            );
             dispatch(loginSuccess(res.data));
-            toast.success("Login Successful");
+            toast.success("Login Successful 🎉");
             navigate("/");
         } catch (err) {
             toast.error(err.response?.data?.message || "Login Failed");
@@ -24,20 +28,53 @@ export default function Login() {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="bg-white p-6 shadow-lg rounded w-96 space-y-5">
+        <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-indigo-100 px-4">
+            <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8 space-y-6">
 
-                <h2 className="text-xl font-bold text-center">Welcome Back! 🔑</h2>
+                {/* Header */}
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold text-blue-600">
+                        Welcome Back 👋
+                    </h2>
+                    <p className="text-gray-500 text-sm mt-1">
+                        Login to continue to HouseHub
+                    </p>
+                </div>
 
-                <input className="input" name="email" placeholder="Email" type="email" onChange={handleChange} />
-                <input className="input" name="password" placeholder="Password" type="password" onChange={handleChange} />
+                {/* Inputs */}
+                <div className="space-y-4">
+                    <input
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="email"
+                        placeholder="Email address"
+                        type="email"
+                        onChange={handleChange}
+                    />
+                    <input
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="password"
+                        placeholder="Password"
+                        type="password"
+                        onChange={handleChange}
+                    />
+                </div>
 
-                <button onClick={loginUser} className="btn-primary">Login</button>
+                {/* Button */}
+                <button
+                    onClick={loginUser}
+                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer"
+                >
+                    Login
+                </button>
 
-                <p className="text-sm text-center">
+                {/* Footer */}
+                <p className="text-sm text-center text-gray-600">
                     New here?
-                    <span className="text-blue-500 cursor-pointer ml-1" onClick={() => navigate("/register")}>
-                        Create Account
+                    <span
+                        className="ml-1 text-blue-600 font-medium cursor-pointer hover:underline"
+                        onClick={() => navigate("/register")}
+                    >
+                        Create an account
                     </span>
                 </p>
 

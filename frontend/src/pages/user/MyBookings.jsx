@@ -23,6 +23,7 @@ export default function MyBookings() {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setBookings(res.data);
+                // console.log(res.data);
             } catch {
                 toast.error("Failed to fetch your bookings");
             }
@@ -51,7 +52,7 @@ export default function MyBookings() {
                         {/* Top Section */}
                         <div className="space-y-2">
                             <h3 className="text-lg font-semibold text-gray-800">
-                                Sevice : {b.serviceId?.name}
+                                Sevice : {b.serviceId?.name || b.provider?.serviceCategory}
                             </h3>
 
                             <p className="text-sm text-gray-600">

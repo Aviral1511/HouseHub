@@ -1,7 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { FiTool } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 export default function AIAssistant() {
     const { token } = useSelector((state) => state.auth);
@@ -52,7 +54,7 @@ export default function AIAssistant() {
                 <button
                     onClick={analyze}
                     disabled={loading}
-                    className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-60"
+                    className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-semibold cursor-pointer hover:bg-blue-700 transition disabled:opacity-60"
                 >
                     {loading ? "Analyzing..." : "Analyze Issue"}
                 </button>
@@ -85,26 +87,24 @@ export default function AIAssistant() {
                         </h3>
 
                         <div className="grid sm:grid-cols-2 gap-3">
-                            {result.recommendedProviders.map((p) => (
+                            {/* {result.recommendedProviders.map((p) => ( */}
+                            <Link to={`/providers/${result.recommendedProviders[0].serviceCategory}/${result.recommendedProviders[0]._id}`}>
                                 <div
-                                    key={p._id}
+                                    key={result.recommendedProviders[0]._id}
                                     className="border rounded-lg p-3 flex items-center gap-3 hover:shadow-md transition"
                                 >
-                                    <img
-                                        src={p.userId?.profilePic || "/default-avatar.png"}
-                                        alt="provider"
-                                        className="w-10 h-10 rounded-full object-cover border"
-                                    />
+                                    <FiTool className="w-10 h-10 rounded-full object-cover border" />
                                     <div>
                                         <p className="font-semibold">
-                                            {p.userId?.name}
+                                            {result.recommendedProviders[0].userId?.name}
                                         </p>
-                                        <p className="text-sm text-gray-600">
-                                            {p.serviceCategory}
+                                        <p className="text-sm text-gray-600 font-bold">
+                                            {result.recommendedProviders[0].serviceCategory}
                                         </p>
                                     </div>
                                 </div>
-                            ))}
+                            </Link>
+                            {/*  ))} */}
                         </div>
                     </div>
                 </div>
