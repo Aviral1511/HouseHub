@@ -27,3 +27,36 @@ export const updateUserProfile = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { name, address, phone, profilePic } = req.body;
+
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, address, phone, profilePic },
+      { new: true }
+    ).select("-password");
+
+    res.json({ message: "Profile updated", user });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateProviderProfile = async (req, res) => {
+  try {
+    const { bio, experience, hourlyRate, profilePic } = req.body;
+
+    const provider = await Provider.findOneAndUpdate(
+      { userId: req.user.id },
+      { bio, experience, hourlyRate, profilePic },
+      { new: true }
+    );
+
+    res.json({ message: "Provider profile updated", provider });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
