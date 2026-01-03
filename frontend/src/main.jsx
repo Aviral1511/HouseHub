@@ -29,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <App />
-      <ToastContainer position="top-right" autoClose={3000} theme="colored" />
+      <ToastContainer position="top-right" autoClose={2500} theme="colored" />
     </PersistGate>
   </Provider>
 );

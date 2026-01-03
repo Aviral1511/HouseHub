@@ -8,6 +8,14 @@ export const createBooking = async (req, res) => {
     try {
         const { providerId, serviceId, scheduledDate, address, totalAmount } = req.body;
 
+        // Ensure the selected date is not in the past
+        const currentDate = new Date();
+        const selectedDate = new Date(scheduledDate);
+
+        if (selectedDate < currentDate) {
+            return res.status(400).json({ message: "Scheduled date cannot be in the past. Please select a future date." });
+        }
+
         const newBooking = await Booking.create({
             userId: req.user.id,
             providerId,
@@ -26,6 +34,7 @@ export const createBooking = async (req, res) => {
 };
 
 
+
 // PROVIDER accepts booking
 export const acceptBooking = async (req, res) => {
     try {
@@ -33,7 +42,7 @@ export const acceptBooking = async (req, res) => {
 
         if (!booking) return res.status(404).json({ message: "Booking not found" });
         console.log(booking);
-        if (booking.providerId.userId !== req.user.id)
+        if (booking.providerId.toString() !== req.user.id)
             return res.status(403).json({ message: "Unauthorized" });
 
         booking.status = "accepted";
@@ -112,14 +121,14 @@ export const getMyBookings = async (req, res) => {
       providerMap[p.userId._id.toString()] = p;
     });
 
-    console.log(providerMap);
+    // console.log(providerMap);
 
     // attach provider object manually
     const enrichedBookings = bookings.map(b => ({
       ...b.toObject(),
       provider: providerMap[b.providerId?.toString()] || null
     }));
-    console.log(enrichedBookings);
+    // console.log(enrichedBookings);
     res.json(enrichedBookings);
 
   } catch (err) {

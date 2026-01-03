@@ -48,9 +48,9 @@ export const getProvidersByCategory = async (req, res) => {
 
 export const getCurrentProvider = async (req, res) => {
     const {id} = req.params;
-    console.log(id);
+    // console.log(id);
     try {
-        const provider = await Provider.findById(id);
+        const provider = await Provider.findById(id).populate("userId", "-password");
         if(!provider) return res.status(404).json({ message: "Profile not found" });
         res.json(provider);
     } catch (error) {

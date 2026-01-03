@@ -14,9 +14,11 @@ export default function AddReview() {
 
     const submitReview = async () => {
         try {
-            await axios.post("http://localhost:8000/api/review/add",
+            await axios.post(
+                "http://localhost:8000/api/review/add",
                 { providerId, bookingId, rating, comment },
-                { headers: { Authorization: `Bearer ${token}` } });
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
 
             toast.success("Review submitted!");
             navigate("/my-bookings");
@@ -26,23 +28,50 @@ export default function AddReview() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow space-y-4">
-            <h2 className="text-xl font-bold text-blue-600 text-center">Rate Service ⭐</h2>
+        <div className="min-h-[70vh] flex items-center justify-center px-4">
+            <div className="w-full max-w-md bg-gray-100 rounded-xl shadow-lg p-6 space-y-5">
 
-            <label>Rating (1-5):</label>
-            <input type="number" min={1} max={5} className="input"
-                value={rating} onChange={(e) => setRating(e.target.value)} />
+                <h2 className="text-2xl font-bold text-center text-blue-600">
+                    Rate Your Service
+                </h2>
 
-            <textarea
-                placeholder="Write feedback..."
-                className="input"
-                rows={3}
-                onChange={(e) => setComment(e.target.value)}
-            />
+                {/* Rating */}
+                <div>
+                    <label className="block font-medium mb-1 text-gray-700">
+                        Rating (1–5) ⭐
+                    </label>
+                    <input
+                        type="number"
+                        min={1}
+                        max={5}
+                        value={rating}
+                        onChange={(e) => setRating(e.target.value)}
+                        className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
 
-            <button onClick={submitReview} className="btn-primary w-full">
-                Submit Review
-            </button>
+                {/* Comment */}
+                <div>
+                    <label className="block font-medium mb-1 text-gray-700">
+                        Feedback
+                    </label>
+                    <textarea
+                        rows={4}
+                        placeholder="Share your experience..."
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        className="w-full border rounded-lg px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                {/* Submit */}
+                <button
+                    onClick={submitReview}
+                    className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer"
+                >
+                    Submit Review
+                </button>
+            </div>
         </div>
     );
 }
