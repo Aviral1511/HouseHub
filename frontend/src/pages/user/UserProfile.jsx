@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import MyBookings from "./MyBookings";
+import ProviderBookings from "../provider/ProviderBookings";
 
 export default function UserProfile() {
     const { token, user } = useSelector((state) => state.auth);
@@ -85,7 +86,8 @@ export default function UserProfile() {
                         </Link>
                     </div>
                 ))} */}
-                <MyBookings />
+                {profile?.user?.role === "user" && <MyBookings />}
+                {profile?.user?.role === "provider" && <ProviderBookings />}
             </div>
 
         </div>

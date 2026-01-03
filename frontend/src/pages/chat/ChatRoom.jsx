@@ -4,8 +4,9 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AiOutlinePaperClip } from "react-icons/ai";
+import { FiSend } from "react-icons/fi";
 
-const socket = io("http://localhost:8000"); // Change if backend uses 5000
+const socket = io("http://localhost:8000");
 
 export default function ChatRoom() {
     const { token, user } = useSelector((state) => state.auth);
@@ -16,8 +17,8 @@ export default function ChatRoom() {
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const fileRef = useRef(null);
+    const bottomRef = useRef(null);
 
-    // Load history
     useEffect(() => {
         const fetchMessages = async () => {
             const res = await axios.get(`http://localhost:8000/api/chat/${id}`, {
@@ -30,11 +31,16 @@ export default function ChatRoom() {
         fetchMessages();
 
         socket.on("receive_message", (msg) => {
-            setMessages((prev) => [...prev, msg]);
+            setMessages(prev => [...prev, msg]);
         });
+
+        return () => socket.off("receive_message");
     }, []);
 
-    // Send message + image
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
     const sendMsg = async () => {
         if (!text && !file) return;
 
@@ -42,19 +48,23 @@ export default function ChatRoom() {
         form.append("bookingId", id);
         if (text) form.append("message", text);
         if (file) form.append("image", file);
+        console.log(form);
 
-        // Emit for real-time UI
         socket.emit("send_message", {
             bookingId: id,
             message: text,
             image: preview,
             senderId: user._id
         });
+        try {
+            const res = await axios.post("http://localhost:8000/api/chat", form, {
+                headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
+            });
 
-        // Upload to backend
-        await axios.post("http://localhost:8000/api/chat", form, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        } catch (error) {
+            console.log(error);
+        }
+
 
         setText("");
         setFile(null);
@@ -62,34 +72,55 @@ export default function ChatRoom() {
     };
 
     return (
-        <div className="max-w-lg mx-auto p-4">
+        <div className="max-w-2xl mx-auto mt-4 h-[80vh] flex flex-col bg-white shadow-lg rounded-xl overflow-hidden">
 
-            <h2 className="font-bold text-xl mb-4">Chat 💬</h2>
-
-            {/* Chat Box */}
-            <div className="border p-3 h-96 overflow-y-auto bg-white space-y-2 rounded">
-                {messages.map((m, i) => (
-                    <div key={i} className={`${m.senderId?._id === user?._id ? "text-right" : "text-left"}`}>
-                        <div className="inline-block p-2 rounded bg-gray-100 mb-1 max-w-[75%]">
-                            {m.message && <p>{m.message}</p>}
-
-                            {m.image && (
-                                <img
-                                    src={m.image}
-                                    className="w-40 rounded mt-1 cursor-pointer"
-                                    onClick={() => window.open(m.image, "_blank")}
-                                />
-                            )}
-                        </div>
-                    </div>
-                ))}
+            {/* Header */}
+            <div className="px-4 py-3 border-b font-semibold text-lg bg-linear-to-r from-blue-600 to-indigo-600 text-white">
+                Chat 💬
             </div>
 
-            {/* Input Row */}
-            <div className="flex gap-2 my-3 items-center">
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+                {messages.map((m, i) => {
+                    const isMe = (m.senderId?._id || m.senderId) === user?._id;
+                    return (
+                        <div key={i} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
+                            <div
+                                className={`max-w-[70%] px-4 py-2 rounded-2xl text-sm shadow
+                                    ${isMe
+                                        ? "bg-blue-600 text-white rounded-br-none"
+                                        : "bg-white text-gray-800 rounded-bl-none border"
+                                    }`}
+                            >
+                                {m.message && <p>{m.message}</p>}
+
+                                {m.image && (
+                                    <img
+                                        src={m.image}
+                                        className="mt-2 w-48 rounded-lg cursor-pointer border"
+                                        onClick={() => window.open(m.image, "_blank")}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+                <div ref={bottomRef} />
+            </div>
+
+            {/* Preview */}
+            {preview && (
+                <div className="px-4 py-2 border-t bg-gray-100 flex items-center gap-3">
+                    <img src={preview} className="w-16 h-16 rounded-lg object-cover border" />
+                    <p className="text-sm text-gray-600">Image ready to send</p>
+                </div>
+            )}
+
+            {/* Input */}
+            <div className="p-3 border-t flex items-center gap-2 bg-white">
                 <AiOutlinePaperClip
                     size={26}
-                    className="cursor-pointer"
+                    className="cursor-pointer text-gray-500 hover:text-blue-600"
                     onClick={() => fileRef.current.click()}
                 />
 
@@ -107,21 +138,17 @@ export default function ChatRoom() {
                 <input
                     value={text}
                     onChange={(e) => setText(e.target.value)}
-                    className="input flex-1"
+                    className="flex-1 px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Type a message..."
                 />
 
+                <button
+                    onClick={sendMsg}
+                    className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full cursor-pointer"
+                >
+                    <FiSend />
+                </button>
             </div>
-            <button onClick={sendMsg} className="btn-primary w-24">
-                Send
-            </button>
-
-            {preview && (
-                <div className="mt-2">
-                    <p className="text-sm text-gray-500">Image Preview:</p>
-                    <img src={preview} className="w-32 rounded border" />
-                </div>
-            )}
         </div>
     );
 }

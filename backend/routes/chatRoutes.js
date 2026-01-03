@@ -6,7 +6,7 @@ import { upload } from "../middlewares/uploadImage.js";
 const router = express.Router();
 
 // Send message (user or provider)
-router.post("/", auth, sendMessage);
+// router.post("/", auth, sendMessage);
 
 // Get chat history
 router.get("/:bookingId", auth, getMessages);

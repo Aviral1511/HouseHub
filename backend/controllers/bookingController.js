@@ -140,7 +140,7 @@ export const getMyBookings = async (req, res) => {
 
 
 // PROVIDER views assigned bookings
-export const getProviderBookings = async (req, res) => {
+export const getProviderBookings = async (req, res) => {  
     try {
         const bookings = await Booking.find({ providerId: req.user.id })
         .populate("userId serviceId");

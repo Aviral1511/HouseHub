@@ -87,9 +87,12 @@ export default function Navbar() {
                                         <FiUser /> Profile
                                     </Link>
 
-                                    <Link to="/my-bookings" className="dropdown-item">
+                                    {user?.role === "user" && <Link to="/my-bookings" className="dropdown-item">
                                         📅 My Bookings
-                                    </Link>
+                                    </Link>}
+                                    {user?.role === "provider" && <Link to="/provider/bookings" className="dropdown-item">
+                                        📅 My Bookings
+                                    </Link>}
 
 
 

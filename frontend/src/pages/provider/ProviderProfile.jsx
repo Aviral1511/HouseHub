@@ -16,7 +16,8 @@ export default function ProviderProfile() {
         location: { city: "", state: "", pincode: "" }
     });
 
-    const updateField = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+    const updateField = (e) =>
+        setForm({ ...form, [e.target.name]: e.target.value });
 
     const updateLocation = (e) =>
         setForm({
@@ -26,12 +27,11 @@ export default function ProviderProfile() {
 
     const saveProfile = async () => {
         try {
-            const res = await axios.post(
+            await axios.post(
                 "http://localhost:8000/api/provider/create",
                 form,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-
             toast.success("Profile created successfully!");
             navigate("/");
         } catch (err) {
@@ -39,46 +39,126 @@ export default function ProviderProfile() {
         }
     };
 
-    if (user?.role !== "provider")
-        return <h2 className="text-center mt-10 text-xl">⚠ Only Providers Can Access This Page!</h2>;
+    if (user?.role !== "provider") {
+        return (
+            <h2 className="text-center mt-16 text-xl font-semibold text-red-500">
+                ⚠ Only Providers Can Access This Page
+            </h2>
+        );
+    }
 
     return (
-        <div className="max-w-lg mx-auto p-6 bg-white shadow mt-10 rounded space-y-4">
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+            <div className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-8 space-y-6">
 
-            <h2 className="text-2xl font-bold text-center text-blue-600">
-                Provider Profile Setup 🔧
-            </h2>
+                {/* Header */}
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold text-blue-600">
+                        Provider Profile Setup 🔧
+                    </h2>
+                    <p className="text-gray-500 text-sm mt-1">
+                        Complete your profile to start receiving jobs
+                    </p>
+                </div>
 
-            <select name="serviceCategory" className="input" onChange={updateField}>
-                <option value="">Select Service Category</option>
-                <option value="Plumber">Plumber</option>
-                <option value="Electrician">Electrician</option>
-                <option value="Cleaner">Cleaner</option>
-                <option value="Carpenter">Carpenter</option>
-                <option value="AC Repair">AC Repair</option>
-                <option value="Painter">Painter</option>
-            </select>
+                {/* Service Category */}
+                <div>
+                    <label className="block text-sm font-medium mb-1">
+                        Service Category
+                    </label>
+                    <select
+                        name="serviceCategory"
+                        className="input"
+                        onChange={updateField}
+                    >
+                        <option value="">Select Service Category</option>
+                        <option value="Plumber">Plumber</option>
+                        <option value="Electrician">Electrician</option>
+                        <option value="Cleaner">Cleaner</option>
+                        <option value="Carpenter">Carpenter</option>
+                        <option value="AC Repair">AC Repair</option>
+                        <option value="Painter">Painter</option>
+                    </select>
+                </div>
 
-            <input name="experience" className="input" placeholder="Experience (years)" onChange={updateField} />
-            <input name="basePrice" className="input" placeholder="Base Price" onChange={updateField} />
+                {/* Experience & Price */}
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium mb-1">
+                            Experience (Years)
+                        </label>
+                        <input
+                            name="experience"
+                            className="input"
+                            placeholder="e.g. 5"
+                            onChange={updateField}
+                        />
+                    </div>
 
-            <textarea
-                name="bio"
-                className="input"
-                placeholder="Short description about your work"
-                rows={3}
-                onChange={updateField}
-            />
+                    <div>
+                        <label className="block text-sm font-medium mb-1">
+                            Base Price (₹)
+                        </label>
+                        <input
+                            name="basePrice"
+                            className="input"
+                            placeholder="e.g. 300"
+                            onChange={updateField}
+                        />
+                    </div>
+                </div>
 
-            <h3 className="font-semibold">Location:</h3>
-            <input name="city" className="input" placeholder="City" onChange={updateLocation} />
-            <input name="state" className="input" placeholder="State" onChange={updateLocation} />
-            <input name="pincode" className="input" placeholder="Pincode" onChange={updateLocation} />
+                {/* Bio */}
+                <div>
+                    <label className="block text-sm font-medium mb-1">
+                        About Your Work
+                    </label>
+                    <textarea
+                        name="bio"
+                        className="input"
+                        rows={4}
+                        placeholder="Briefly describe your experience and services"
+                        onChange={updateField}
+                    />
+                </div>
 
-            <button className="btn-primary" onClick={saveProfile}>
-                Save Profile
-            </button>
+                {/* Location */}
+                <div>
+                    <h3 className="font-semibold mb-2 text-gray-700">
+                        📍 Service Location
+                    </h3>
 
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <input
+                            name="city"
+                            className="input"
+                            placeholder="City"
+                            onChange={updateLocation}
+                        />
+                        <input
+                            name="state"
+                            className="input"
+                            placeholder="State"
+                            onChange={updateLocation}
+                        />
+                        <input
+                            name="pincode"
+                            className="input"
+                            placeholder="Pincode"
+                            onChange={updateLocation}
+                        />
+                    </div>
+                </div>
+
+                {/* Action Button */}
+                <button
+                    onClick={saveProfile}
+                    className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition"
+                >
+                    Save Profile 🚀
+                </button>
+
+            </div>
         </div>
     );
 }
