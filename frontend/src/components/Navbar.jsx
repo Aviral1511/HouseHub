@@ -90,6 +90,9 @@ export default function Navbar() {
                                     {user?.role === "user" && <Link to="/my-bookings" className="dropdown-item">
                                         📅 My Bookings
                                     </Link>}
+                                    {user?.role === "provider" && <Link to="/provider/profile" className="dropdown-item">
+                                        Edit Profile
+                                    </Link>}
                                     {user?.role === "provider" && <Link to="/provider/bookings" className="dropdown-item">
                                         📅 My Bookings
                                     </Link>}
@@ -127,6 +130,7 @@ export default function Navbar() {
                 <div className="md:hidden bg-blue-100 border-2 rounded-lg px-6 py-4 space-y-3 text-center">
                     <Link to="/services" className="mobile-link">Services</Link>
                     <Link to="/ai-chat" className="mobile-link">HouseHub AI</Link>
+                    {user?.role === "provider" && <Link to="/provider/profile" className="mobile-link">Edit Profile</Link>}
                     {user?.role === "provider" && <Link to="/provider/bookings" className="mobile-link">Provider Panel</Link>}
                     {user?.role === "admin" && <Link to="/admin" className="mobile-link">Admin Dashboard</Link>}
 

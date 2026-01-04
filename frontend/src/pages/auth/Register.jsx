@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../redux/slices/authSlice.js";
 
 export default function Register() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [form, setForm] = useState({
         name: "", email: "", password: "", role: "user"
     });
@@ -14,9 +17,19 @@ export default function Register() {
 
     const registerUser = async () => {
         try {
-            await axios.post("http://localhost:8000/api/auth/register", form);
+            const res = await axios.post("http://localhost:8000/api/auth/register", form);
+            dispatch(loginSuccess(res.data));
             toast.success("Registered Successfully 🎉");
-            navigate("/login");
+
+            const role = res.data.user?.role; // 👈 source of truth
+            console.log(role === "provider");
+
+            if (role === "provider") {
+                navigate("/provider/profile");
+            }
+            if (role === "user") {
+                navigate("/");
+            }
         } catch (err) {
             toast.error(err.response?.data?.message || "Registration Failed");
         }

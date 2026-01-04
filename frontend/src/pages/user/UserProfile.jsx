@@ -11,6 +11,9 @@ export default function UserProfile() {
     const [profile, setProfile] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [form, setForm] = useState({});
+    const [image, setImage] = useState(null);
+    const [preview, setPreview] = useState(null);
+
 
     const fetchProfile = async () => {
         try {
@@ -18,7 +21,13 @@ export default function UserProfile() {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setProfile(res.data);
-            setForm(res.data);
+            setForm({
+                name: res.data.user.name,
+                phone: res.data.user.phone,
+                city: res.data.user.address?.city
+            });
+
+            // console.log(res.data);
         } catch {
             toast.error("Failed to load profile");
         }
@@ -27,6 +36,34 @@ export default function UserProfile() {
     useEffect(() => {
         fetchProfile();
     }, []);
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append("name", form.name);
+            formData.append("phone", form.phone || "");
+            formData.append("address", JSON.stringify(form.address || {}));
+
+            if (image) {
+                formData.append("image", image); // 🔥 optional
+            }
+
+            await axios.put(
+                "http://localhost:8000/api/user/profile",
+                formData,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            toast.success("Profile updated");
+            setImage(null);
+            setPreview(null);
+            setEditMode(false);
+            fetchProfile();
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     if (!profile)
         return <p className="text-center mt-20 text-gray-500">Loading profile…</p>;
@@ -73,24 +110,25 @@ export default function UserProfile() {
 
                 {/* Edit Mode */}
                 {editMode ? (
-                    <div className="space-y-4 mt-4">
+                    <form className="space-y-4 mt-4" onSubmit={onSubmit}>
+
                         <input
                             className="input"
-                            value={form.name}
+                            value={form?.name}
                             onChange={(e) => setForm({ ...form, name: e.target.value })}
                             placeholder="Name"
                         />
 
                         <input
                             className="input"
-                            value={form.phone || ""}
+                            value={form?.phone || ""}
                             onChange={(e) => setForm({ ...form, phone: e.target.value })}
                             placeholder="Phone"
                         />
 
                         <input
                             className="input"
-                            value={form.address?.city || ""}
+                            value={form?.address?.city || ""}
                             onChange={(e) =>
                                 setForm({
                                     ...form,
@@ -100,31 +138,54 @@ export default function UserProfile() {
                             placeholder="City"
                         />
 
-                        <div className="flex gap-3">
+                        {/* IMAGE UPLOAD */}
+                        <div className="flex items-center gap-5">
+                            <img
+                                src={
+                                    preview ||
+                                    profile.user?.profilePic ||
+                                    "/default-avatar.png"
+                                }
+                                alt="Preview"
+                                className="w-24 h-24 rounded-full object-cover border-2 border-blue-500"
+                            />
+
+                            <label className="cursor-pointer text-sm font-medium text-blue-600 hover:underline">
+                                Change Photo
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    hidden
+                                    onChange={(e) => {
+                                        setImage(e.target.files[0]);
+                                        setPreview(URL.createObjectURL(e.target.files[0]));
+                                    }}
+                                />
+                            </label>
+                        </div>
+
+                        {/* ACTIONS */}
+                        <div className="flex gap-3 pt-2">
                             <button
+                                type="submit"
                                 className="flex-1 bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer"
-                                onClick={async () => {
-                                    await axios.put(
-                                        "http://localhost:8000/api/user/profile",
-                                        form,
-                                        { headers: { Authorization: `Bearer ${token}` } }
-                                    );
-                                    toast.success("Profile updated");
-                                    setEditMode(false);
-                                    fetchProfile();
-                                }}
                             >
                                 Save Changes
                             </button>
 
                             <button
-                                className="flex-1 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition"
-                                onClick={() => setEditMode(false)}
+                                type="button"
+                                className="flex-1 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                                onClick={() => {
+                                    setEditMode(false);
+                                    setImage(null);
+                                    setPreview(null);
+                                }}
                             >
                                 Cancel
                             </button>
                         </div>
-                    </div>
+                    </form>
                 ) : (
                     <button
                         className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer"
@@ -133,6 +194,7 @@ export default function UserProfile() {
                         Edit Profile
                     </button>
                 )}
+
             </div>
 
             {/* BOOKINGS / JOBS SECTION */}
