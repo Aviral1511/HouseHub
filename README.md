@@ -156,6 +156,13 @@ Admin:    admin1@househub.com    | admin123
 ```
 
 ## 📸 Screenshots
+<img width="1878" height="885" alt="image" src="https://github.com/user-attachments/assets/eb98af61-474f-4b34-b3ff-4c1c87c796a3" />
+<img width="1694" height="875" alt="image" src="https://github.com/user-attachments/assets/e42cad79-ce14-4e0e-a95a-28d1ff95c033" />
+<img width="1805" height="755" alt="image" src="https://github.com/user-attachments/assets/d573df8f-8fc8-4658-850d-d4834d15ed9e" />
+<img width="865" height="758" alt="image" src="https://github.com/user-attachments/assets/95d59cf5-20e2-41bb-92a6-7a96cf427f57" />
+<img width="895" height="942" alt="image" src="https://github.com/user-attachments/assets/9d34ed4f-8086-432d-9c82-daad4b824d0d" />
+<img width="1396" height="357" alt="image" src="https://github.com/user-attachments/assets/70b9fe06-80b2-4b81-96b6-2fc800c2e3b7" />
+
 
 ## 💬 Real-Time Chat & Image Sharing
 
